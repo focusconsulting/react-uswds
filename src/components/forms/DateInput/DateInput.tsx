@@ -12,6 +12,7 @@ type DateInputElementProps = {
   unit: 'month' | 'day' | 'year'
   maxLength: number
   minLength?: number
+  requiredMarker?: boolean
 }
 
 export const DateInput = ({
@@ -21,6 +22,7 @@ export const DateInput = ({
   unit,
   maxLength,
   minLength,
+  requiredMarker,
   className,
   ...inputProps
 }: DateInputElementProps & OptionalTextInputProps): React.ReactElement => {
@@ -34,7 +36,9 @@ export const DateInput = ({
 
   return (
     <FormGroup className={formGroupClasses}>
-      <Label htmlFor={id}>{label}</Label>
+      <Label htmlFor={id} requiredMarker={requiredMarker}>
+        {label}
+      </Label>
       <TextInput
         {...inputProps}
         className={inputClasses}
