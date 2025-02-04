@@ -16,20 +16,20 @@ export const FilePreview = ({
   file: File
 }): React.ReactElement => {
   const fileReaderRef = useRef<FileReader>(new FileReader())
+  const firstRenderRef = useRef(true)
   const [isLoading, setIsLoading] = useState(true)
   const [previewSrc, setPreviewSrc] = useState(SPACER_GIF)
   const [showGenericPreview, setShowGenericPreview] = useState(false)
 
   useEffect(() => {
-    fileReaderRef.current.onloadend = (): void => {
-      setIsLoading(false)
-      setPreviewSrc(fileReaderRef.current.result as string)
-    }
+    if(firstRenderRef.current) {
+      fileReaderRef.current.onloadend = (): void => {
+        setIsLoading(false)
+        setPreviewSrc(fileReaderRef.current.result as string)
+      }
 
-    fileReaderRef.current.readAsDataURL(file)
-
-    return (): void => {
-      fileReaderRef.current.onloadend = null
+      fileReaderRef.current.readAsDataURL(file)
+      firstRenderRef.current = false
     }
   }, [])
 
